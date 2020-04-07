@@ -11,6 +11,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
+    "start_example": "GOOGLE_CLOUD_PROJECT=gcp-demo-123456 GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/.secret/dev.json node app.js",
     "test": "mocha --exit **/*.test.js"
   },
   "dependencies": {
