@@ -38,19 +38,19 @@ app.get('/logs', (req, res) => {
   res.sendStatus(200);
 });
 
-// Start the server
-const port = process.env.PORT || 8080;
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
-});
+if (process.env.FUNCTION_TARGET == null) {
+  // Start the server
+  const port = process.env.PORT || 8080;
+  app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+  });
 
-module.exports = app;
-
-// Allow deployment to Cloud Functions
-if (process.env.FUNCTION_TARGET != null) {
+  // Exporting for App Engine, etc.
+  module.exports = app;
+} else {
+  // Export function for Cloud Functions
   const functions = require('firebase-functions');
-  const admin = require('firebase-admin');
-
-  admin.initializeApp();
   exports.bookshelf = functions.https.onRequest(app);
 }
+// NOTE: Cannot do both `module.exports` and `exports.*` at the same time.
+// For a good write-up on this, see https://www.hacksparrow.com/nodejs/exports-vs-module-exports.html or https://app.pagedash.com/p/589818cb-cd49-4138-83f3-2f3e174120bc/x0DYcXJfotndQqR6ZoE2 (archive link)
