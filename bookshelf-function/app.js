@@ -28,7 +28,7 @@ app.use('/api/books', require('./books/api'));
 
 // Redirect base URL to <BASE_URL>/books
 app.get('/', (req, res) => {
-  res.redirect(`/${process.env.FUNCTION_TARGET}` +'/books');
+  res.redirect(`/${process.env.FUNCTION_TARGET}/books`);
 });
 
 app.get('/errors', () => {

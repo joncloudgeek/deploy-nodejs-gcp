@@ -62,7 +62,9 @@ router.get('/add', (req, res) => {
 // [START add]
 router.post(
   '/add',
-  images.multer.single('image'),
+  // note: "Because of the way Cloud Functions pre-processes some requests, you can expect that some Express middleware will not work". See https://stackoverflow.com/a/48289899/1161743
+  // images.multer.single('image'),
+  images.processMultipartForm, // new
   images.sendUploadToGCS,
   async (req, res) => {
     let data = req.body;
@@ -100,7 +102,9 @@ router.get('/:book/edit', async (req, res) => {
  */
 router.post(
   '/:book/edit',
-  images.multer.single('image'),
+  // note: "Because of the way Cloud Functions pre-processes some requests, you can expect that some Express middleware will not work". See https://stackoverflow.com/a/48289899/1161743
+  // images.multer.single('image'),
+  images.processMultipartForm, // new
   images.sendUploadToGCS,
   async (req, res) => {
     let data = req.body;
