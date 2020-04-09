@@ -45,3 +45,12 @@ app.listen(port, () => {
 });
 
 module.exports = app;
+
+// Allow deployment to Cloud Functions
+if (process.env.FUNCTION_TARGET != null) {
+  const functions = require('firebase-functions');
+  const admin = require('firebase-admin');
+
+  admin.initializeApp();
+  exports.bookshelf = functions.https.onRequest(app);
+}
