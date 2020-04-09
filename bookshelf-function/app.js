@@ -17,6 +17,8 @@ const express = require('express');
 
 const app = express();
 
+app.locals.baseUrl = `/${process.env.FUNCTION_TARGET}`
+
 app.set('views', require('path').join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -24,9 +26,9 @@ app.set('view engine', 'pug');
 app.use('/books', require('./books/crud'));
 app.use('/api/books', require('./books/api'));
 
-// Redirect root to /books
+// Redirect base URL to <BASE_URL>/books
 app.get('/', (req, res) => {
-  res.redirect('/books');
+  res.redirect(`/${process.env.FUNCTION_TARGET}` +'/books');
 });
 
 app.get('/errors', () => {
@@ -38,11 +40,9 @@ app.get('/logs', (req, res) => {
   res.sendStatus(200);
 });
 
-// Start the server
-const port = process.env.PORT || 8080;
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
-});
+// Export function for Cloud Functions
+const functions = require('firebase-functions');
+exports.bookshelf = functions.https.onRequest(app);
 
-// Exporting for App Engine, etc.
-module.exports = app;
+// Side note: Cannot do both `module.exports` and `exports.*` at the same time.
+// For a good write-up on this, see https://www.hacksparrow.com/nodejs/exports-vs-module-exports.html or https://app.pagedash.com/p/589818cb-cd49-4138-83f3-2f3e174120bc/x0DYcXJfotndQqR6ZoE2 (archive link)
