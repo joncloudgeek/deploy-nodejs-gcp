@@ -122,6 +122,7 @@ function processMultipartForm(req, res, next) {
       encoding,
       mimetype,
       filename,
+      originalname: filename,
       path: filepath,
     };
 
@@ -130,8 +131,13 @@ function processMultipartForm(req, res, next) {
 
     // File was processed by Busboy; wait for it to be written to disk.
     const promise = new Promise((resolve, reject) => {
+      const bufs = []
+      file.on('data', chunk => {
+        bufs.push(chunk);
+      })
       file.on('end', () => {
         writeStream.end();
+        uploads[fieldname].buffer = Buffer.concat(bufs);
       });
       writeStream.on('finish', resolve);
       writeStream.on('error', reject);
@@ -151,7 +157,7 @@ function processMultipartForm(req, res, next) {
 
       // Ignore empty files (field has no file)
       if (file.filename) {
-        res.file = file;
+        req.file = file;
         fs.unlinkSync(file.path);
       }
     }
