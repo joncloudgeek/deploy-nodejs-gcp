@@ -81,6 +81,7 @@ const multer = Multer({
 });
 // [END multer]
 
+// NEW MIDDLEWARE TO DEPLOY IN CLOUD FUNCTIONS
 // Node.js doesn't have a built-in multipart/form-data parsing library.
 // Instead, we can use the 'busboy' library from NPM to parse these requests.
 // Code is mostly from https://cloud.google.com/functions/docs/writing/http#multipart_data

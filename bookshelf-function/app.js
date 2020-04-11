@@ -17,7 +17,17 @@ const express = require('express');
 
 const app = express();
 
-app.locals.baseUrl = `/${process.env.FUNCTION_TARGET}`
+// The actual root URL that is the root of the application
+const rootUrl = process.env.FUNCTION_TARGET ? `/${process.env.FUNCTION_TARGET}` : "";
+
+// Set rootUrl for use in templates
+app.locals.rootUrl = rootUrl
+
+// Middleware to write rootUrl to request object
+app.use('*', (req, res, next) => {
+  req.rootUrl = rootUrl;
+  next();
+})
 
 app.set('views', require('path').join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -28,7 +38,7 @@ app.use('/api/books', require('./books/api'));
 
 // Redirect base URL to <BASE_URL>/books
 app.get('/', (req, res) => {
-  res.redirect(`/${process.env.FUNCTION_TARGET}/books`);
+  res.redirect(`${req.rootUrl}/books`);
 });
 
 app.get('/errors', () => {

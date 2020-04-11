@@ -11,7 +11,8 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "start_example": "GOOGLE_CLOUD_PROJECT=gcp-demo-123456 GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/.secret/dev.json node app.js",
+    "dev": "GOOGLE_CLOUD_PROJECT=$PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/.secret/dev.json functions-framework --target=bookshelf",
+    "start_example": "GOOGLE_CLOUD_PROJECT=$PROJECT_ID GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/.secret/dev.json node app.js",
     "test": "mocha --exit **/*.test.js"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "pug": "^2.0.3"
   },
   "devDependencies": {
+    "@google-cloud/functions-framework": "^1.5.1",
     "mocha": "^7.0.0",
     "supertest": "^4.0.2"
   }
