@@ -38,6 +38,10 @@ app.get('/logs', (req, res) => {
   res.sendStatus(200);
 });
 
+app.get('/healthcheck', (req, res) => {
+  res.send("OK");
+});
+
 // Start the server
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
