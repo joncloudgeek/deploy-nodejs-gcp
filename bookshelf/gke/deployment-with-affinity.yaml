@@ -19,6 +19,9 @@ spec:
         # Bookshelf listens on port 8080 for web traffic.
         ports:
         - containerPort: 8080
+        env:
+        - name: GOOGLE_CLOUD_PROJECT
+          value: gcp-demo-123456
         livenessProbe:
           httpGet:
             path: /healthcheck
