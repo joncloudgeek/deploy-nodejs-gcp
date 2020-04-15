@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bookshelf-gke
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bookshelf
+  template:
+    metadata:
+      labels:
+        app: bookshelf
+    spec:
+      containers:
+      - name: bookshelf-node
+        # Replace gcp-demo-123456 with your own project ID
+        image: gcr.io/gcp-demo-123456/bookshelf-node:v1
+        # Bookshelf listens on port 8080 for web traffic.
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                      - bookshelf
+                topologyKey: "kubernetes.io/hostname"

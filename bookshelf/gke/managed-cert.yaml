@@ -1,0 +1,7 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: bookshelf-gke-ssl
+spec:
+  domains:
+    - bookshelf-gke.joncloudgeek.com

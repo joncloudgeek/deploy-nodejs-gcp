@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: bookshelf-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: bookshelf-gke-ip
+    networking.gke.io/managed-certificates: bookshelf-gke-ssl
+spec:
+  backend:
+    serviceName: bookshelf
+    servicePort: 80
