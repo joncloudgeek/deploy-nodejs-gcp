@@ -20,11 +20,16 @@ const app = express();
 // The actual root path of the application
 let rootPath = process.env.FUNCTION_TARGET ? `/${process.env.FUNCTION_TARGET}` : "/";
 if (process.env.ROOT_PATH != null) { // expects "/" or "/path"
-  rootPath = `${process.env.ROOT_PATH}`;
+  rootPath = process.env.ROOT_PATH;
 }
 
-// Set rootPath for use in templates. If rootPath === "/", set to empty string.
-app.locals.rootPath = rootPath === "/" ? "" : rootPath;
+// If rootPath is "/", set to empty string to prevent "//" in URLs.
+if (rootPath === "/") {
+  rootPath = "";
+}
+
+// Set rootPath for use in templates.
+app.locals.rootPath = rootPath;
 
 // Middleware to write rootPath to request object
 app.use('*', (req, res, next) => {
