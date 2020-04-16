@@ -16,13 +16,13 @@ extends ../base.pug
 block content
   h3 Books
 
-  a(href=`${rootUrl}/books/add`, class='btn btn-success btn-sm')
+  a(href=`${rootPath}/books/add`, class='btn btn-success btn-sm')
     i.glyphicon.glyphicon-plus
     span  Add book
 
   each book in books
     .media
-      a(href=`${rootUrl}/books/${book.id}`)
+      a(href=`${rootPath}/books/${book.id}`)
         .media-left
             img(src=book.imageUrl || "http://placekitten.com/g/128/192")
         .media-body

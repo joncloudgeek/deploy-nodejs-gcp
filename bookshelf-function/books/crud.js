@@ -77,7 +77,7 @@ router.post(
 
     // Save the data to the database.
     const savedData = await db.create(data);
-    res.redirect(`${req.rootUrl}${req.baseUrl}/${savedData.id}`);
+    res.redirect(`${req.rootPath}${req.baseUrl}/${savedData.id}`);
   }
 );
 // [END add]
@@ -116,7 +116,7 @@ router.post(
     }
 
     const savedData = await db.update(req.params.book, data);
-    res.redirect(`${req.rootUrl}${req.baseUrl}/${savedData.id}`);
+    res.redirect(`${req.rootPath}${req.baseUrl}/${savedData.id}`);
   }
 );
 
@@ -139,7 +139,7 @@ router.get('/:book', async (req, res) => {
  */
 router.get('/:book/delete', async (req, res) => {
   await db.delete(req.params.book);
-  res.redirect(`${req.rootUrl}${req.baseUrl}`);
+  res.redirect(`${req.rootPath}${req.baseUrl}`);
 });
 
 module.exports = router;

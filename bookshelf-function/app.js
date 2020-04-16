@@ -17,15 +17,18 @@ const express = require('express');
 
 const app = express();
 
-// The actual root URL that is the root of the application
-const rootUrl = process.env.FUNCTION_TARGET ? `/${process.env.FUNCTION_TARGET}` : "";
+// The actual root path of the application
+let rootPath = process.env.FUNCTION_TARGET ? `/${process.env.FUNCTION_TARGET}` : "/";
+if (process.env.ROOT_PATH != null) { // expects "/" or "/path"
+  rootPath = `${process.env.ROOT_PATH}`;
+}
 
-// Set rootUrl for use in templates
-app.locals.rootUrl = rootUrl
+// Set rootPath for use in templates. If rootPath === "/", set to empty string.
+app.locals.rootPath = rootPath === "/" ? "" : rootPath;
 
-// Middleware to write rootUrl to request object
+// Middleware to write rootPath to request object
 app.use('*', (req, res, next) => {
-  req.rootUrl = rootUrl;
+  req.rootPath = rootPath;
   next();
 })
 
@@ -38,7 +41,7 @@ app.use('/api/books', require('./books/api'));
 
 // Redirect base URL to <BASE_URL>/books
 app.get('/', (req, res) => {
-  res.redirect(`${req.rootUrl}/books`);
+  res.redirect(`${req.rootPath}/books`);
 });
 
 app.get('/errors', () => {
