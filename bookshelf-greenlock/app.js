@@ -41,6 +41,7 @@ app.get('/logs', (req, res) => {
 
 // DO NOT DO app.listen() unless we're testing this directly
 if (require.main === module) {
+  // This module was run directly from the command line as in node xxx.js
   // Start the server
   const port = process.env.PORT || 8080;
   app.listen(port, () => {
