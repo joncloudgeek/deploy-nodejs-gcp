@@ -1,1 +1,1 @@
-{"configDir":"./greenlock.d"}
+{"configDir":"./greenlock.d","manager":{"module":"@greenlock/manager"}}

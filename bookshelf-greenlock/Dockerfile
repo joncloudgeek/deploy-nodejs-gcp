@@ -18,5 +18,7 @@ RUN npm install
 # Copy over app code
 COPY . .
 
+VOLUME /app/greenlock.d
+
 EXPOSE 8080
-CMD [ "node", "server.js" ]
+CMD ./start.sh
